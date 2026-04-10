@@ -7,3 +7,4 @@
 7. Added standard Python cache ignore rules after verification to keep the repository clean across local runs.
 8. Restored the provided Assignment Instructions folder to its original state and moved the project scaffold into a separate source layout to keep the assignment material untouched.
 9. Simplified the new project layout so the root entrypoint runs directly and the local memory file stays out of version control.
+10. Added GitHub repository download support and local download-detection tools for the agent, with downloaded repositories stored under a dedicated local folder.

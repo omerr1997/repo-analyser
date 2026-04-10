@@ -26,6 +26,6 @@ def build_agent(settings: Settings, memory_store: MemoryStore):
 
     return create_agent(
         model=model,
-        tools=build_tools(memory_store),
+        tools=build_tools(memory_store, settings.downloaded_repos_path),
         system_prompt=SYSTEM_PROMPT,
     )

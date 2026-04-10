@@ -15,6 +15,7 @@ class Settings:
     openrouter_api_key: str
     model_name: str
     memory_path: Path
+    downloaded_repos_path: Path
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -26,9 +27,13 @@ class Settings:
 
         model_name = os.getenv("OPENROUTER_MODEL", DEFAULT_MODEL).strip() or DEFAULT_MODEL
         memory_path = Path(os.getenv("AGENT_MEMORY_PATH", "data/agent-memory.json"))
+        downloaded_repos_path = Path(
+            os.getenv("DOWNLOADED_REPOS_PATH", "downloaded-repos")
+        )
 
         return cls(
             openrouter_api_key=api_key,
             model_name=model_name,
             memory_path=memory_path,
+            downloaded_repos_path=downloaded_repos_path,
         )
