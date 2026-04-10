@@ -19,7 +19,9 @@ In addition to the current LangChain-based scaffold, I also looked into existing
 
 One option I reviewed was LlamaIndex. From my current understanding, it offers building blocks for ingesting codebases and repositories and is aligned with the kind of assignment we received: understanding a repository, surfacing relevant structure, and helping answer questions about issues, weaknesses, and other repository-level concerns. It is being tracked here as a relevant alternative approach that may be useful to revisit as the implementation evolves.
 
-Another direction worth exploring for a longer version of the project is graph-based repository mapping. The idea is to take a repository and represent it as a graph of functions, calls, and data flow so the system can better explain how code paths connect and how execution moves through the project. One option that appears relevant for this kind of deeper exploration is GitNexus.
+Another direction worth exploring for a longer version of the project is graph-based repository mapping. The idea is to take a repository and represent it as a graph of functions, calls, and data flow so the system can better explain how code paths connect and how execution moves through the project. One option that appears especially relevant for this kind of deeper exploration is GitNexus.
+
+From my experience using GitNexus in a different repository, it seems capable of significantly improving understanding of repository structure, component relationships, and how one part of the system leads to another. That kind of mapping can make it easier to write a stronger summary of what a project is doing, how it should be used, and where it could be improved. It also seems like a strong candidate to use alongside an agent, since it can handle a meaningful portion of the structural heavy lifting before the agent begins higher-level reasoning and write-up work.
 
 Run the scaffold with:
 
