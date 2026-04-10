@@ -9,6 +9,7 @@ from .runtime import run_agent_turn
 
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=5000)
+    thread_id: str = Field(min_length=1, max_length=120)
 
 
 app = FastAPI(title="Repo Analyser API")
@@ -29,4 +30,4 @@ def healthcheck() -> dict[str, str]:
 
 @app.post("/api/chat")
 def chat(payload: ChatRequest) -> dict:
-    return run_agent_turn(payload.message)
+    return run_agent_turn(payload.message, payload.thread_id)

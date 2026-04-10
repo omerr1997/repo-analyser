@@ -6,21 +6,32 @@ from .agent import build_agent
 from .config import Settings
 from .memory_store import MemoryStore
 
+CHAT_HISTORY_NAMESPACE = "chat_threads"
+MAX_HISTORY_MESSAGES = 12
 
-def run_agent_turn(user_message: str) -> dict[str, Any]:
+
+def run_agent_turn(user_message: str, thread_id: str) -> dict[str, Any]:
     settings = Settings.from_env()
     memory_store = MemoryStore(settings.memory_path)
     agent = build_agent(settings, memory_store)
+    conversation = _get_conversation_history(memory_store, thread_id)
+    conversation.append({"role": "user", "content": user_message.strip()})
 
     try:
-        result = agent.invoke({"messages": [{"role": "user", "content": user_message.strip()}]})
+        result = agent.invoke({"messages": conversation})
     except Exception as exc:
         return _build_runtime_error_response(exc, settings.max_output_tokens)
 
     messages = result["messages"]
+    answer = _extract_text(messages[-1])
+    _store_conversation_history(
+        memory_store=memory_store,
+        thread_id=thread_id,
+        messages=conversation + [{"role": "assistant", "content": answer}],
+    )
 
     return {
-        "answer": _extract_text(messages[-1]),
+        "answer": answer,
         "trace": _build_trace(messages),
         "toolsUsed": _get_tools_used(messages),
     }
@@ -140,3 +151,31 @@ def _extract_text(message: Any) -> str:
                     parts.append(text)
         return "\n".join(parts).strip()
     return str(content).strip()
+
+
+def _get_conversation_history(
+    memory_store: MemoryStore,
+    thread_id: str,
+) -> list[dict[str, str]]:
+    raw_history = memory_store.get(CHAT_HISTORY_NAMESPACE, thread_id)
+    if not isinstance(raw_history, list):
+        return []
+
+    history: list[dict[str, str]] = []
+    for item in raw_history[-MAX_HISTORY_MESSAGES:]:
+        if not isinstance(item, dict):
+            continue
+        role = str(item.get("role", "")).strip()
+        content = str(item.get("content", "")).strip()
+        if role in {"user", "assistant"} and content:
+            history.append({"role": role, "content": content})
+    return history
+
+
+def _store_conversation_history(
+    memory_store: MemoryStore,
+    thread_id: str,
+    messages: list[dict[str, str]],
+) -> None:
+    trimmed_messages = messages[-MAX_HISTORY_MESSAGES:]
+    memory_store.put(CHAT_HISTORY_NAMESPACE, thread_id, trimmed_messages)

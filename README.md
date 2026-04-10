@@ -56,6 +56,7 @@ The React UI supports:
 - a terminal-inspired black-and-green workspace
 - hoverable agent trace summaries attached to the agent badge
 - Enter to submit and Shift+Enter for a new line
+- persisted thread context between chat turns through the local memory store
 
 The trace view is intentionally a readable reasoning summary and tool log, not raw hidden chain-of-thought.
 

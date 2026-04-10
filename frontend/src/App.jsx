@@ -1,6 +1,7 @@
 import { startTransition, useDeferredValue, useState } from "react";
 
 const API_URL = "/api/chat";
+const THREAD_STORAGE_KEY = "repo-analyser-thread-id";
 
 const INITIAL_MESSAGES = [
   {
@@ -17,6 +18,7 @@ function App() {
   const [draft, setDraft] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const deferredMessages = useDeferredValue(messages);
+  const threadId = getThreadId();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -41,7 +43,7 @@ function App() {
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: prompt }),
+        body: JSON.stringify({ message: prompt, thread_id: threadId }),
       });
 
       if (!response.ok) {
@@ -209,6 +211,17 @@ function formatTraceOutput(output) {
     return trimmed;
   }
   return `${trimmed.slice(0, 280)}...`;
+}
+
+function getThreadId() {
+  const existing = window.localStorage.getItem(THREAD_STORAGE_KEY);
+  if (existing) {
+    return existing;
+  }
+
+  const created = crypto.randomUUID();
+  window.localStorage.setItem(THREAD_STORAGE_KEY, created);
+  return created;
 }
 
 export default App;
