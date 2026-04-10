@@ -29,3 +29,4 @@
 29. Added an OSV batch-based dependency vulnerability tool and updated the agent prompt so dependency files can trigger known-weakness checks during repository analysis.
 30. Created a screenshots folder in the project so UI and result images can be stored alongside the repository work.
 31. Added a captured UI screenshot to the screenshots folder for project documentation and future reference.
+32. Strengthened the agent guardrails to forbid exposing secrets or internal configuration and to keep web search scoped to repository, code, and software-analysis topics only.
