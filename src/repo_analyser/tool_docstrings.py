@@ -1,4 +1,7 @@
 TOOL_DOCSTRINGS = {
+    "list_downloaded_repositories": (
+        "List all repositories currently downloaded to the local downloaded-repos folder."
+    ),
     "download_github_repository": (
         "Download a GitHub repository to the local downloaded-repos folder."
     ),

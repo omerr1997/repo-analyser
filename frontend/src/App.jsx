@@ -107,7 +107,7 @@ function App() {
         {isLoading ? (
           <article className="message-row assistant">
             <div className="message-head">
-              <AgentBadge trace={[]} loading />
+              <AgentBadge trace={[]} toolsUsed={[]} loading />
             </div>
             <pre className="message-content">thinking...</pre>
           </article>
@@ -142,7 +142,7 @@ function MessageRow({ message }) {
     <article className={`message-row ${message.role}`}>
       <div className="message-head">
         {message.role === "assistant" ? (
-          <AgentBadge trace={message.trace ?? []} />
+          <AgentBadge trace={message.trace ?? []} toolsUsed={message.toolsUsed ?? []} />
         ) : (
           <div className="user-badge">
             <span className="user-avatar">01</span>
@@ -155,8 +155,9 @@ function MessageRow({ message }) {
   );
 }
 
-function AgentBadge({ trace, loading = false }) {
+function AgentBadge({ trace, toolsUsed = [], loading = false }) {
   const hasTrace = trace.length > 0;
+  const hasTools = toolsUsed.length > 0;
 
   return (
     <div className="agent-badge" tabIndex={0}>
@@ -167,9 +168,23 @@ function AgentBadge({ trace, loading = false }) {
 
       {loading ? <span className="agent-meta">working</span> : null}
 
-      {hasTrace ? (
+      {hasTrace || hasTools || loading ? (
         <div className="trace-popover" role="note">
           <p className="trace-heading">reasoning summary</p>
+          {!hasTrace && hasTools ? (
+            <div className="trace-line">
+              <p className="trace-line-title">tools used</p>
+              <p className="trace-line-copy">{toolsUsed.join(", ")}</p>
+            </div>
+          ) : null}
+
+          {!hasTrace && !hasTools && loading ? (
+            <div className="trace-line">
+              <p className="trace-line-title">status</p>
+              <p className="trace-line-copy">The agent is currently working on the response.</p>
+            </div>
+          ) : null}
+
           {trace.map((entry, index) => (
             <div className="trace-line" key={entry.id ?? `${entry.tool}-${index}`}>
               <p className="trace-line-title">

@@ -109,15 +109,18 @@ textarea {
 
 .chat-log {
   padding: 18px 22px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: visible;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
 .message-row {
+  position: relative;
   border-left: 2px solid var(--line);
   padding-left: 14px;
+  overflow: visible;
 }
 
 .message-row.user {
@@ -148,6 +151,7 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  cursor: default;
 }
 
 .agent-avatar,

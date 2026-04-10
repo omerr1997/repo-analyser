@@ -35,6 +35,21 @@ def get_downloaded_repository_path(owner: str, repo: str, base_dir: Path) -> Pat
     return Path(base_dir) / owner / repo
 
 
+def list_downloaded_repositories(base_dir: Path) -> list[str]:
+    root = Path(base_dir)
+    if not root.exists():
+        return []
+
+    repositories: list[str] = []
+    for owner_dir in sorted(root.iterdir()):
+        if not owner_dir.is_dir():
+            continue
+        for repo_dir in sorted(owner_dir.iterdir()):
+            if repo_dir.is_dir():
+                repositories.append(f"{owner_dir.name}/{repo_dir.name}")
+    return repositories
+
+
 def list_downloaded_repository_files(owner: str, repo: str, base_dir: Path) -> list[str]:
     repo_path = get_downloaded_repository_path(owner, repo, base_dir)
     if not repo_path.exists():

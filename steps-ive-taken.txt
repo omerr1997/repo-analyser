@@ -23,3 +23,4 @@
 23. Added runtime handling for token and credit exhaustion so the UI now shows a clear assistant message with next steps instead of surfacing a backend crash.
 24. Added the current date directly to the agent system prompt so the assistant has explicit date context during runtime.
 25. Added the downloaded-repos directory to Git ignore so locally fetched repositories are not committed to version control.
+26. Added a dedicated downloaded-repository listing tool, updated the prompt to use it for local repo questions, and improved the agent badge hover so trace or tool details appear more reliably.
