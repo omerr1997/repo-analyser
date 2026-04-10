@@ -8,12 +8,14 @@ from dotenv import load_dotenv
 
 
 DEFAULT_MODEL = "openai/gpt-4.1-mini"
+DEFAULT_MAX_OUTPUT_TOKENS = 1200
 
 
 @dataclass(frozen=True)
 class Settings:
     openrouter_api_key: str
     model_name: str
+    max_output_tokens: int
     memory_path: Path
     downloaded_repos_path: Path
     tavily_api_key: str
@@ -27,6 +29,9 @@ class Settings:
             raise ValueError("OPENROUTER_API_KEY is required.")
 
         model_name = os.getenv("OPENROUTER_MODEL", DEFAULT_MODEL).strip() or DEFAULT_MODEL
+        max_output_tokens = int(
+            os.getenv("OPENROUTER_MAX_OUTPUT_TOKENS", str(DEFAULT_MAX_OUTPUT_TOKENS))
+        )
         memory_path = Path(os.getenv("AGENT_MEMORY_PATH", "data/agent-memory.json"))
         downloaded_repos_path = Path(
             os.getenv("DOWNLOADED_REPOS_PATH", "downloaded-repos")
@@ -36,6 +41,7 @@ class Settings:
         return cls(
             openrouter_api_key=api_key,
             model_name=model_name,
+            max_output_tokens=max_output_tokens,
             memory_path=memory_path,
             downloaded_repos_path=downloaded_repos_path,
             tavily_api_key=tavily_api_key,

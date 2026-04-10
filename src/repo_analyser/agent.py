@@ -24,6 +24,7 @@ def build_agent(settings: Settings, memory_store: MemoryStore):
         model=settings.model_name,
         api_key=settings.openrouter_api_key,
         temperature=0,
+        max_tokens=settings.max_output_tokens,
     )
 
     return create_agent(

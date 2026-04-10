@@ -64,3 +64,11 @@ pip install -e .
 ```
 
 That registers `src/repo_analyser` as a proper local package and usually fixes import resolution in IDEs and terminals.
+
+If OpenRouter reports a credit or token-budget issue, reduce the response cap with:
+
+```bash
+OPENROUTER_MAX_OUTPUT_TOKENS=800
+```
+
+The app now defaults to a conservative output cap to avoid oversized requests on limited credits.
