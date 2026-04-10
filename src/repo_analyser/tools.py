@@ -20,6 +20,10 @@ from .osv_client import (
     parse_dependency_specs,
     query_dependency_vulnerabilities,
 )
+from .repo_dependencies import (
+    discover_repository_dependencies,
+    format_discovered_dependencies,
+)
 from .tavily_search import search_web
 from .tooling import tracked_tool
 
@@ -113,6 +117,20 @@ def build_tools(
         return "\n\n".join(responses)
 
     @tracked_tool
+    def get_repository_dependencies(repository: str) -> str:
+        owner, repo = parse_repository_reference(repository)
+        local_path = get_downloaded_repository_path(
+            owner=owner,
+            repo=repo,
+            base_dir=downloaded_repos_path,
+        )
+        if not local_path.exists():
+            return f"'{owner}/{repo}' has not been downloaded yet."
+
+        specs, sources, skipped = discover_repository_dependencies(local_path)
+        return format_discovered_dependencies(specs, sources, skipped)
+
+    @tracked_tool
     def check_dependency_vulnerabilities(
         dependencies: str,
         ecosystem: str = "PyPI",
@@ -127,6 +145,30 @@ def build_tools(
             return f"Dependency vulnerability check failed: {exc}"
 
         return format_vulnerability_results(parsed_specs, results, rejected)
+
+    @tracked_tool
+    def check_repository_dependency_vulnerabilities(repository: str) -> str:
+        owner, repo = parse_repository_reference(repository)
+        local_path = get_downloaded_repository_path(
+            owner=owner,
+            repo=repo,
+            base_dir=downloaded_repos_path,
+        )
+        if not local_path.exists():
+            return f"'{owner}/{repo}' has not been downloaded yet."
+
+        specs, sources, skipped = discover_repository_dependencies(local_path)
+        if not specs:
+            return format_discovered_dependencies(specs, sources, skipped)
+
+        try:
+            results = query_dependency_vulnerabilities(specs)
+        except requests.RequestException as exc:
+            return f"Dependency vulnerability check failed: {exc}"
+
+        discovery_section = format_discovered_dependencies(specs, sources, skipped)
+        vulnerability_section = format_vulnerability_results(specs, results, [])
+        return f"{discovery_section}\n\nVulnerability results:\n{vulnerability_section}"
 
     @tracked_tool
     def web_search(query: str) -> str:
@@ -151,7 +193,9 @@ def build_tools(
         list_downloaded_repositories,
         download_github_repository,
         get_downloaded_repo_files,
+        get_repository_dependencies,
         check_dependency_vulnerabilities,
+        check_repository_dependency_vulnerabilities,
         web_search,
         think,
     ]

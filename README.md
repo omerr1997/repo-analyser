@@ -13,6 +13,7 @@ The project scaffold lives under `src/repo_analyser/` and currently includes:
 - A FastAPI API layer for frontend communication
 - A React workspace for voice input, chat, and trace inspection
 - OSV-based dependency vulnerability checking for package versions
+- repository-aware dependency discovery before vulnerability reporting
 
 ## Notes on Approaches Considered
 

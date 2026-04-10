@@ -30,3 +30,5 @@
 30. Created a screenshots folder in the project so UI and result images can be stored alongside the repository work.
 31. Added a captured UI screenshot to the screenshots folder for project documentation and future reference.
 32. Strengthened the agent guardrails to forbid exposing secrets or internal configuration and to keep web search scoped to repository, code, and software-analysis topics only.
+33. Added repository-aware dependency discovery and a repo-level vulnerability check so dependency weakness answers are based only on dependencies actually found in the downloaded repository.
+34. Tightened the dependency-vulnerability flow so the agent explicitly avoids making package-risk claims when exact repository dependency versions were not actually discovered.
