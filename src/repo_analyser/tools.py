@@ -7,7 +7,10 @@ from time import time
 from .github_repos import (
     download_repository_archive,
     get_downloaded_repository_path,
+    list_downloaded_repository_files,
     parse_repository_reference,
+    read_downloaded_repository_file,
+    read_downloaded_repository_text_files,
 )
 from .memory_store import MemoryStore
 from .tavily_search import search_web
@@ -47,16 +50,67 @@ def build_tools(
         )
 
     @tracked_tool
-    def is_github_repository_downloaded(repository: str) -> str:
+    def get_downloaded_repo_files(
+        repository: str,
+        get_file_names: bool = True,
+        get_file_contents: bool = False,
+        specific_file: str = "",
+    ) -> str:
         owner, repo = parse_repository_reference(repository)
         local_path = get_downloaded_repository_path(
             owner=owner,
             repo=repo,
             base_dir=downloaded_repos_path,
         )
-        if local_path.exists():
-            return f"Yes. '{owner}/{repo}' is already available at '{local_path.as_posix()}'."
-        return f"No. '{owner}/{repo}' has not been downloaded yet."
+        if not local_path.exists():
+            return f"'{owner}/{repo}' has not been downloaded yet."
+
+        requested_file = specific_file.strip()
+        if requested_file:
+            content = read_downloaded_repository_file(
+                owner=owner,
+                repo=repo,
+                base_dir=downloaded_repos_path,
+                relative_file_path=requested_file,
+            )
+            if content is None:
+                return (
+                    f"'{owner}/{repo}' is downloaded, but the file '{requested_file}' "
+                    "was not found as readable text."
+                )
+            return f"--- {requested_file} ---\n{content}"
+
+        responses: list[str] = []
+
+        if get_file_names:
+            file_names = list_downloaded_repository_files(
+                owner=owner,
+                repo=repo,
+                base_dir=downloaded_repos_path,
+            )
+            if not file_names:
+                responses.append(f"'{owner}/{repo}' is downloaded, but no files were found.")
+            else:
+                responses.append("Files:\n" + "\n".join(file_names))
+
+        if get_file_contents:
+            all_text = read_downloaded_repository_text_files(
+                owner=owner,
+                repo=repo,
+                base_dir=downloaded_repos_path,
+            )
+            if not all_text:
+                responses.append("No readable text files were found.")
+            else:
+                responses.append("Contents:\n" + all_text)
+
+        if not responses:
+            return (
+                "Nothing was requested. Set get_file_names, get_file_contents, "
+                "or provide specific_file."
+            )
+
+        return "\n\n".join(responses)
 
     @tracked_tool
     def web_search(query: str) -> str:
@@ -81,7 +135,7 @@ def build_tools(
         get_agent_status,
         save_note,
         download_github_repository,
-        is_github_repository_downloaded,
+        get_downloaded_repo_files,
         web_search,
         think,
     ]

@@ -4,8 +4,8 @@ TOOL_DOCSTRINGS = {
     "download_github_repository": (
         "Download a GitHub repository to the local downloaded-repos folder."
     ),
-    "is_github_repository_downloaded": (
-        "Check whether a GitHub repository has already been downloaded locally."
+    "get_downloaded_repo_files": (
+        "List files from a downloaded repository or return file contents from it."
     ),
     "web_search": "Search the web with Tavily and return concise results with source URLs.",
     "think": (

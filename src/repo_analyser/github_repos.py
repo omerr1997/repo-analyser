@@ -13,6 +13,9 @@ GITHUB_REPO_PATTERN = re.compile(
     r"^(?:https://github\.com/)?(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+?)(?:\.git)?/?$"
 )
 REQUEST_TIMEOUT_SECONDS = 30
+MAX_LISTED_FILES = 500
+MAX_TOTAL_TEXT_CHARS = 20_000
+MAX_SINGLE_FILE_CHARS = 8_000
 
 
 def parse_repository_reference(repository: str) -> tuple[str, str]:
@@ -30,6 +33,72 @@ def parse_repository_reference(repository: str) -> tuple[str, str]:
 
 def get_downloaded_repository_path(owner: str, repo: str, base_dir: Path) -> Path:
     return Path(base_dir) / owner / repo
+
+
+def list_downloaded_repository_files(owner: str, repo: str, base_dir: Path) -> list[str]:
+    repo_path = get_downloaded_repository_path(owner, repo, base_dir)
+    if not repo_path.exists():
+        return []
+
+    files: list[str] = []
+    for path in sorted(repo_path.rglob("*")):
+        if path.is_file():
+            files.append(path.relative_to(repo_path).as_posix())
+            if len(files) >= MAX_LISTED_FILES:
+                break
+    return files
+
+
+def read_downloaded_repository_file(
+    owner: str,
+    repo: str,
+    base_dir: Path,
+    relative_file_path: str,
+) -> str | None:
+    repo_path = get_downloaded_repository_path(owner, repo, base_dir)
+    if not repo_path.exists():
+        return None
+
+    candidate = (repo_path / relative_file_path.strip()).resolve()
+    if repo_path.resolve() not in candidate.parents and candidate != repo_path.resolve():
+        raise ValueError("Requested file path is outside the downloaded repository.")
+    if not candidate.exists() or not candidate.is_file():
+        return None
+
+    try:
+        return candidate.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return None
+
+
+def read_downloaded_repository_text_files(owner: str, repo: str, base_dir: Path) -> str:
+    repo_path = get_downloaded_repository_path(owner, repo, base_dir)
+    if not repo_path.exists():
+        return ""
+
+    sections: list[str] = []
+    consumed_chars = 0
+
+    for relative_path in list_downloaded_repository_files(owner, repo, base_dir):
+        file_path = repo_path / relative_path
+        try:
+            content = file_path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+
+        trimmed = content[:MAX_SINGLE_FILE_CHARS]
+        section = f"--- {relative_path} ---\n{trimmed}"
+        if len(content) > MAX_SINGLE_FILE_CHARS:
+            section += "\n[truncated]"
+
+        projected = consumed_chars + len(section)
+        if projected > MAX_TOTAL_TEXT_CHARS:
+            break
+
+        sections.append(section)
+        consumed_chars = projected
+
+    return "\n\n".join(sections)
 
 
 def get_default_branch(owner: str, repo: str) -> str:
