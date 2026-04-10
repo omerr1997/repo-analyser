@@ -7,7 +7,7 @@ from time import time
 from .github_repos import (
     download_repository_archive,
     get_downloaded_repository_path,
-    list_downloaded_repositories,
+    list_downloaded_repositories as list_local_repositories,
     list_downloaded_repository_files,
     parse_repository_reference,
     read_downloaded_repository_file,
@@ -24,8 +24,8 @@ def build_tools(
     tavily_api_key: str,
 ) -> list:
     @tracked_tool
-    def list_downloaded_repositories_tool() -> str:
-        repositories = list_downloaded_repositories(downloaded_repos_path)
+    def list_downloaded_repositories() -> str:
+        repositories = list_local_repositories(downloaded_repos_path)
         if not repositories:
             return "No repositories are currently downloaded."
         return "Downloaded repositories:\n" + "\n".join(repositories)
@@ -126,7 +126,7 @@ def build_tools(
         return f"Thought recorded under '{key}'."
 
     return [
-        list_downloaded_repositories_tool,
+        list_downloaded_repositories,
         download_github_repository,
         get_downloaded_repo_files,
         web_search,
