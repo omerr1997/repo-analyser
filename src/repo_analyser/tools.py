@@ -3,6 +3,7 @@ from __future__ import annotations
 from hashlib import sha1
 from pathlib import Path
 from time import time
+import requests
 
 from .github_repos import (
     download_repository_archive,
@@ -14,6 +15,11 @@ from .github_repos import (
     read_downloaded_repository_text_files,
 )
 from .memory_store import MemoryStore
+from .osv_client import (
+    format_vulnerability_results,
+    parse_dependency_specs,
+    query_dependency_vulnerabilities,
+)
 from .tavily_search import search_web
 from .tooling import tracked_tool
 
@@ -107,6 +113,22 @@ def build_tools(
         return "\n\n".join(responses)
 
     @tracked_tool
+    def check_dependency_vulnerabilities(
+        dependencies: str,
+        ecosystem: str = "PyPI",
+    ) -> str:
+        parsed_specs, rejected = parse_dependency_specs(dependencies, ecosystem)
+        if not parsed_specs and rejected:
+            return format_vulnerability_results([], [], rejected)
+
+        try:
+            results = query_dependency_vulnerabilities(parsed_specs)
+        except requests.RequestException as exc:
+            return f"Dependency vulnerability check failed: {exc}"
+
+        return format_vulnerability_results(parsed_specs, results, rejected)
+
+    @tracked_tool
     def web_search(query: str) -> str:
         query = query.strip()
         if not query:
@@ -129,6 +151,7 @@ def build_tools(
         list_downloaded_repositories,
         download_github_repository,
         get_downloaded_repo_files,
+        check_dependency_vulnerabilities,
         web_search,
         think,
     ]

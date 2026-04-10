@@ -12,6 +12,7 @@ The project scaffold lives under `src/repo_analyser/` and currently includes:
 - Separate files for tools, tool docstrings, and the custom `@tracked_tool` decorator
 - A FastAPI API layer for frontend communication
 - A React workspace for voice input, chat, and trace inspection
+- OSV-based dependency vulnerability checking for package versions
 
 ## Notes on Approaches Considered
 

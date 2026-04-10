@@ -26,3 +26,4 @@
 26. Added a dedicated downloaded-repository listing tool, updated the prompt to use it for local repo questions, and improved the agent badge hover so trace or tool details appear more reliably.
 27. Wired actual chat-thread persistence through MemoryStore so follow-up questions now retain repository context across separate requests.
 28. Added a concise README section describing the project as an early-stage repository agent today and a future multi-layer analysis system built from specialized workflow steps.
+29. Added an OSV batch-based dependency vulnerability tool and updated the agent prompt so dependency files can trigger known-weakness checks during repository analysis.
