@@ -3,3 +3,5 @@
 3. Chose OpenRouter as the API LLM provider for this project based on cost efficiency and project suitability.
 4. Added the project environment configuration file and stored the provided OpenRouter API key.
 5. Added a Git ignore rule for the environment file to reduce the risk of committing local secrets.
+6. Replaced the Azure sample with a clean OpenRouter and LangChain boilerplate agent scaffold, including persistent local memory, separated tool files, centralized tool docstrings, and a custom tracked tool decorator.
+7. Added standard Python cache ignore rules after verification to keep the repository clean across local runs.
