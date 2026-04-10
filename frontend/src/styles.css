@@ -64,6 +64,7 @@ textarea {
 .terminal-header {
   display: flex;
   justify-content: space-between;
+  align-items: end;
   gap: 20px;
   padding: 20px 22px;
   border-bottom: 1px solid var(--line);
@@ -73,8 +74,7 @@ textarea {
 .message-role,
 .trace-heading,
 .composer-hint,
-.status-pill,
-.toggle-button,
+.terminal-note,
 .send-button {
   text-transform: lowercase;
   letter-spacing: 0.04em;
@@ -93,28 +93,20 @@ textarea {
   font-weight: 600;
 }
 
-.terminal-controls {
-  display: flex;
-  align-items: start;
-  gap: 12px;
-  flex-wrap: wrap;
+.terminal-note,
+.send-button {
+  color: var(--text-faint);
+  font-size: 0.8rem;
 }
 
-.status-pill,
-.toggle-button,
 .send-button {
   border: 1px solid var(--line);
   background: var(--panel);
   color: var(--text);
   padding: 10px 14px;
-}
-
-.toggle-button,
-.send-button {
   cursor: pointer;
 }
 
-.toggle-button:hover,
 .send-button:hover {
   background: var(--panel-strong);
   border-color: rgba(90, 255, 145, 0.36);
@@ -141,10 +133,53 @@ textarea {
   border-left-color: rgba(42, 255, 114, 0.65);
 }
 
+.message-head {
+  margin-bottom: 8px;
+}
+
 .message-role {
-  margin: 0 0 8px;
+  margin: 0;
   color: var(--text-faint);
   font-size: 0.8rem;
+}
+
+.agent-badge,
+.user-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.agent-avatar,
+.user-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid currentColor;
+  font-size: 0.78rem;
+}
+
+.agent-avatar {
+  color: var(--accent);
+  background: rgba(42, 255, 114, 0.08);
+}
+
+.user-avatar {
+  color: #8cc8ff;
+  background: rgba(89, 150, 255, 0.08);
+}
+
+.user-badge .message-role {
+  color: #8cc8ff;
+}
+
+.agent-meta {
+  color: var(--text-faint);
+  font-size: 0.78rem;
 }
 
 .message-content {
@@ -156,47 +191,68 @@ textarea {
   font-family: var(--mono);
 }
 
-.trace-block {
-  margin-top: 14px;
-  padding: 14px;
-  border: 1px solid rgba(90, 255, 145, 0.14);
-  background: rgba(4, 10, 6, 0.7);
-}
-
 .trace-heading {
   margin: 0 0 12px;
   color: var(--text-faint);
   font-size: 0.82rem;
 }
 
-.trace-entry {
-  border-top: 1px solid rgba(90, 255, 145, 0.12);
-  padding: 10px 0;
+.trace-popover {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 10px);
+  width: min(720px, calc(100vw - 80px));
+  max-height: 420px;
+  overflow: auto;
+  padding: 14px;
+  border: 1px solid rgba(90, 255, 145, 0.18);
+  background: rgba(3, 9, 5, 0.98);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+  z-index: 20;
 }
 
-.trace-entry:first-of-type {
+.agent-badge:hover .trace-popover,
+.agent-badge:focus-visible .trace-popover,
+.agent-badge:focus-within .trace-popover {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.trace-line {
+  border-top: 1px solid rgba(90, 255, 145, 0.12);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.trace-line:first-of-type {
   border-top: 0;
   padding-top: 0;
+  margin-top: 0;
 }
 
-.trace-entry summary {
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
+.trace-line-title,
+.trace-line-copy {
+  margin: 0 0 8px;
+}
+
+.trace-line-title {
   color: var(--accent);
 }
 
-.trace-detail {
-  margin-top: 10px;
+.trace-line-title span {
+  color: var(--text-faint);
 }
 
-.trace-detail p {
-  margin: 0 0 10px;
+.trace-line-copy {
   color: var(--text-dim);
 }
 
-.trace-detail pre {
+.trace-line pre {
   margin: 0;
   white-space: pre-wrap;
   word-break: break-word;
@@ -227,9 +283,9 @@ textarea {
 }
 
 .composer textarea:focus,
-.toggle-button:focus-visible,
+.agent-badge:focus-visible,
 .send-button:focus-visible,
-.trace-entry summary:focus-visible {
+.composer textarea:focus-visible {
   outline: 2px solid rgba(95, 255, 145, 0.26);
   outline-offset: 2px;
 }
@@ -265,13 +321,12 @@ textarea {
     align-items: start;
   }
 
-  .terminal-controls {
+  .send-button,
+  .terminal-note {
     width: 100%;
   }
 
-  .toggle-button,
-  .send-button,
-  .status-pill {
-    width: 100%;
+  .trace-popover {
+    width: min(100vw - 48px, 720px);
   }
 }

@@ -16,8 +16,6 @@ function App() {
   const [messages, setMessages] = useState(INITIAL_MESSAGES);
   const [draft, setDraft] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [traceVisible, setTraceVisible] = useState(false);
-  const [status, setStatus] = useState("idle");
   const deferredMessages = useDeferredValue(messages);
 
   async function handleSubmit(event) {
@@ -35,7 +33,6 @@ function App() {
 
     setDraft("");
     setIsLoading(true);
-    setStatus("thinking");
     startTransition(() => {
       setMessages((current) => [...current, userMessage]);
     });
@@ -63,7 +60,6 @@ function App() {
       startTransition(() => {
         setMessages((current) => [...current, assistantMessage]);
       });
-      setStatus("ready");
     } catch (error) {
       startTransition(() => {
         setMessages((current) => [
@@ -80,9 +76,17 @@ function App() {
           },
         ]);
       });
-      setStatus("error");
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  function handleComposerKeyDown(event) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      if (!isLoading && draft.trim()) {
+        void handleSubmit(event);
+      }
     }
   }
 
@@ -93,27 +97,19 @@ function App() {
           <p className="terminal-kicker">repo analyser</p>
           <h1>Agent Console</h1>
         </div>
-        <div className="terminal-controls">
-          <span className="status-pill">status: {status}</span>
-          <button
-            className="toggle-button"
-            type="button"
-            onClick={() => setTraceVisible((current) => !current)}
-            aria-pressed={traceVisible}
-          >
-            {traceVisible ? "hide trace" : "show trace"}
-          </button>
-        </div>
+        <p className="terminal-note">hover the agent badge for trace</p>
       </header>
 
       <section className="chat-log" role="log" aria-live="polite">
         {deferredMessages.map((message) => (
-          <MessageRow key={message.id} message={message} traceVisible={traceVisible} />
+          <MessageRow key={message.id} message={message} />
         ))}
 
         {isLoading ? (
           <article className="message-row assistant">
-            <p className="message-role">agent</p>
+            <div className="message-head">
+              <AgentBadge trace={[]} loading />
+            </div>
             <pre className="message-content">thinking...</pre>
           </article>
         ) : null}
@@ -127,6 +123,7 @@ function App() {
           id="prompt"
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
+          onKeyDown={handleComposerKeyDown}
           placeholder="Ask about a repository..."
           rows={5}
         />
@@ -141,32 +138,51 @@ function App() {
   );
 }
 
-function MessageRow({ message, traceVisible }) {
-  const hasTrace = message.role === "assistant" && message.trace?.length;
-
+function MessageRow({ message }) {
   return (
     <article className={`message-row ${message.role}`}>
-      <p className="message-role">{message.role === "assistant" ? "agent" : "you"}</p>
+      <div className="message-head">
+        {message.role === "assistant" ? (
+          <AgentBadge trace={message.trace ?? []} />
+        ) : (
+          <div className="user-badge">
+            <span className="user-avatar">01</span>
+            <span className="message-role">you</span>
+          </div>
+        )}
+      </div>
       <pre className="message-content">{message.content}</pre>
+    </article>
+  );
+}
 
-      {traceVisible && hasTrace ? (
-        <div className="trace-block">
-          <p className="trace-heading">trace</p>
-          {message.trace.map((entry, index) => (
-            <details className="trace-entry" key={entry.id ?? `${entry.tool}-${index}`}>
-              <summary>
-                <span>{index + 1}. {entry.tool}</span>
-                <span>{entry.kind === "thought" ? "reasoning" : "tool"}</span>
-              </summary>
-              <div className="trace-detail">
-                <p>{entry.label}</p>
-                <pre>{formatTraceDetail(entry)}</pre>
-              </div>
-            </details>
+function AgentBadge({ trace, loading = false }) {
+  const hasTrace = trace.length > 0;
+
+  return (
+    <div className="agent-badge" tabIndex={0}>
+      <span className="agent-avatar" aria-hidden="true">
+        [bot]
+      </span>
+      <span className="message-role">agent</span>
+
+      {loading ? <span className="agent-meta">working</span> : null}
+
+      {hasTrace ? (
+        <div className="trace-popover" role="note">
+          <p className="trace-heading">trace summary</p>
+          {trace.map((entry, index) => (
+            <div className="trace-line" key={entry.id ?? `${entry.tool}-${index}`}>
+              <p className="trace-line-title">
+                {index + 1}. {entry.tool} <span>{entry.kind === "thought" ? "reasoning" : "tool"}</span>
+              </p>
+              <p className="trace-line-copy">{entry.label}</p>
+              <pre>{formatTraceDetail(entry)}</pre>
+            </div>
           ))}
         </div>
       ) : null}
-    </article>
+    </div>
   );
 }
 
