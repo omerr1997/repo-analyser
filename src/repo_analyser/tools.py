@@ -4,14 +4,14 @@ from hashlib import sha1
 from pathlib import Path
 from time import time
 
-from repo_analyser.github_repos import (
+from .github_repos import (
     download_repository_archive,
     get_downloaded_repository_path,
     parse_repository_reference,
 )
-from repo_analyser.memory_store import MemoryStore
-from repo_analyser.tavily_search import search_web
-from repo_analyser.tooling import tracked_tool
+from .memory_store import MemoryStore
+from .tavily_search import search_web
+from .tooling import tracked_tool
 
 
 def build_tools(

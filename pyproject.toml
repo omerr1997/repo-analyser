@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "repo-analyser"
+version = "0.1.0"
+description = "Repository analyser agent scaffold"
+requires-python = ">=3.10"
+dependencies = [
+  "langchain",
+  "langchain-openrouter",
+  "python-dotenv",
+  "requests",
+  "tavily-python",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

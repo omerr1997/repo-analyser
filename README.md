@@ -20,6 +20,14 @@ One option I reviewed was LlamaIndex. From my current understanding, it offers b
 Run the scaffold with:
 
 ```bash
-pip install -r requirements.txt
+pip install -e .
 python main.py --show-tools
 ```
+
+If your editor says it cannot find modules like `repo_analyser.config`, install the project in editable mode from the repository root:
+
+```bash
+pip install -e .
+```
+
+That registers `src/repo_analyser` as a proper local package and usually fixes import resolution in IDEs and terminals.

@@ -3,9 +3,9 @@ from __future__ import annotations
 from langchain.agents import create_agent
 from langchain_openrouter import ChatOpenRouter
 
-from repo_analyser.config import Settings
-from repo_analyser.memory_store import MemoryStore
-from repo_analyser.tools import build_tools
+from .config import Settings
+from .memory_store import MemoryStore
+from .tools import build_tools
 
 
 SYSTEM_PROMPT = """

@@ -10,3 +10,4 @@
 10. Added GitHub repository download support and local download-detection tools for the agent, with downloaded repositories stored under a dedicated local folder.
 11. Added Tavily-powered web search support, configured the Tavily API key, and introduced a lightweight think tool for internal planning notes.
 12. Documented in the README that the project history is tracked in the steps file and noted the exploration of LlamaIndex as a possible alternative approach for repository understanding and issue analysis.
+13. Standardized the Python package setup with a project configuration file and relative internal imports to improve module resolution in editors and local environments.

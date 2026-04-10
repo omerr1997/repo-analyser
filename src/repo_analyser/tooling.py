@@ -6,7 +6,7 @@ from typing import Any
 
 from langchain.tools import tool as langchain_tool
 
-from repo_analyser.tool_docstrings import TOOL_DOCSTRINGS
+from .tool_docstrings import TOOL_DOCSTRINGS
 
 
 REGISTERED_TOOL_DOCSTRINGS: dict[str, str] = {}
