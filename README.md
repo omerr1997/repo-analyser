@@ -74,3 +74,4 @@ OPENROUTER_MAX_OUTPUT_TOKENS=800
 ```
 
 The app now defaults to a conservative output cap to avoid oversized requests on limited credits.
+When this happens during runtime, the app will return a readable assistant message instead of a backend crash, including guidance to lower the token cap or replace the API key.

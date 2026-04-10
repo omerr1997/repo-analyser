@@ -12,7 +12,11 @@ def run_agent_turn(user_message: str) -> dict[str, Any]:
     memory_store = MemoryStore(settings.memory_path)
     agent = build_agent(settings, memory_store)
 
-    result = agent.invoke({"messages": [{"role": "user", "content": user_message.strip()}]})
+    try:
+        result = agent.invoke({"messages": [{"role": "user", "content": user_message.strip()}]})
+    except Exception as exc:
+        return _build_runtime_error_response(exc, settings.max_output_tokens)
+
     messages = result["messages"]
 
     return {
@@ -20,6 +24,43 @@ def run_agent_turn(user_message: str) -> dict[str, Any]:
         "trace": _build_trace(messages),
         "toolsUsed": _get_tools_used(messages),
     }
+
+
+def _build_runtime_error_response(error: Exception, max_output_tokens: int) -> dict[str, Any]:
+    message = _build_runtime_error_message(error, max_output_tokens)
+    return {
+        "answer": message,
+        "trace": [],
+        "toolsUsed": [],
+    }
+
+
+def _build_runtime_error_message(error: Exception, max_output_tokens: int) -> str:
+    error_text = str(error).strip()
+    lowered = error_text.lower()
+    token_failure_signals = (
+        "requires more credits",
+        "fewer max_tokens",
+        "paymentrequiredresponseerror",
+        "insufficient credits",
+        "run out of token",
+        "out of token",
+    )
+
+    if any(signal in lowered for signal in token_failure_signals):
+        return (
+            "OpenRouter could not complete the request because the account appears to be "
+            "out of credits or the token budget is too high for the current balance.\n\n"
+            "What you can do:\n"
+            "1. Replace the API key with another OpenRouter key that has available credits.\n"
+            "2. Lower OPENROUTER_MAX_OUTPUT_TOKENS and retry.\n"
+            f"Current configured output cap: {max_output_tokens} tokens."
+        )
+
+    return (
+        "The agent hit a runtime error while processing the request.\n\n"
+        f"Details: {error_text or error.__class__.__name__}"
+    )
 
 
 def _build_trace(messages: list[Any]) -> list[dict[str, Any]]:
