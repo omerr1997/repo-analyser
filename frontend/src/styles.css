@@ -127,7 +127,6 @@ textarea {
   border-left-color: rgba(140, 200, 255, 0.7);
   background: rgba(6, 13, 18, 0.55);
   padding: 12px 0 12px 14px;
-  margin-left: 48px;
 }
 
 .message-row.assistant {
