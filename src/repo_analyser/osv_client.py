@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-import re
 from typing import Any
 
 import requests
@@ -16,6 +15,8 @@ class DependencySpec:
     name: str
     version: str
     ecosystem: str
+    estimated: bool = False
+    source_requirement: str = ""
 
 
 def query_dependency_vulnerabilities(specs: list[DependencySpec]) -> list[dict[str, Any]]:
@@ -69,6 +70,8 @@ def format_vulnerability_results(
     for spec, result in zip(specs, results, strict=False):
         vulns = result.get("vulns", []) if isinstance(result, dict) else []
         label = f"{spec.name} {spec.version}"
+        if spec.estimated:
+            label = f"{label} (estimated from '{spec.source_requirement or 'unbounded spec'}')"
 
         if not vulns:
             lines.append(f"{label}: no known vulnerabilities found.")
@@ -82,11 +85,20 @@ def format_vulnerability_results(
 
     if vulnerable_count == 0 and specs:
         lines.append("")
-        lines.append("Summary: no known vulnerabilities were found for the checked dependencies.")
+        if any(spec.estimated for spec in specs):
+            lines.append(
+                "Summary: no known vulnerabilities were found for the checked dependencies, "
+                "but some results were estimated from non-exact version specs."
+            )
+        else:
+            lines.append("Summary: no known vulnerabilities were found for the checked dependencies.")
     elif vulnerable_count > 0:
         lines.append("")
-        lines.append(
+        summary = (
             f"Summary: {vulnerable_count} out of {len(specs)} checked dependencies had known vulnerability findings."
         )
+        if any(spec.estimated for spec in specs):
+            summary += " Some checks used estimated latest versions because exact pins were not present."
+        lines.append(summary)
 
     return "\n".join(lines).strip()
