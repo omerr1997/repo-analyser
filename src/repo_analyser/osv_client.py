@@ -9,9 +9,6 @@ import requests
 
 OSV_QUERY_BATCH_URL = "https://api.osv.dev/v1/querybatch"
 OSV_TIMEOUT_SECONDS = 30
-DEPENDENCY_LINE_PATTERN = re.compile(
-    r"^\s*([A-Za-z0-9_.-]+)\s*(?:==|:|\s+)\s*([^\s#]+)\s*$"
-)
 
 
 @dataclass(frozen=True)
@@ -19,31 +16,6 @@ class DependencySpec:
     name: str
     version: str
     ecosystem: str
-
-
-def parse_dependency_specs(raw_dependencies: str, ecosystem: str) -> tuple[list[DependencySpec], list[str]]:
-    parsed: list[DependencySpec] = []
-    rejected: list[str] = []
-
-    for raw_line in raw_dependencies.splitlines():
-        line = raw_line.strip()
-        if not line or line.startswith("#"):
-            continue
-
-        match = DEPENDENCY_LINE_PATTERN.fullmatch(line)
-        if not match:
-            rejected.append(line)
-            continue
-
-        parsed.append(
-            DependencySpec(
-                name=match.group(1),
-                version=match.group(2),
-                ecosystem=ecosystem,
-            )
-        )
-
-    return parsed, rejected
 
 
 def query_dependency_vulnerabilities(specs: list[DependencySpec]) -> list[dict[str, Any]]:

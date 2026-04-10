@@ -11,9 +11,6 @@ TOOL_DOCSTRINGS = {
     "get_repository_dependencies": (
         "Discover exact dependency versions from a downloaded repository's manifest files."
     ),
-    "check_dependency_vulnerabilities": (
-        "Check one or more package versions for known vulnerabilities using the OSV batch API."
-    ),
     "check_repository_dependency_vulnerabilities": (
         "Discover exact dependency versions from a downloaded repository and check only those dependencies for known vulnerabilities."
     ),

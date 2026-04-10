@@ -17,7 +17,6 @@ from .github_repos import (
 from .memory_store import MemoryStore
 from .osv_client import (
     format_vulnerability_results,
-    parse_dependency_specs,
     query_dependency_vulnerabilities,
 )
 from .repo_dependencies import (
@@ -131,22 +130,6 @@ def build_tools(
         return format_discovered_dependencies(specs, sources, skipped)
 
     @tracked_tool
-    def check_dependency_vulnerabilities(
-        dependencies: str,
-        ecosystem: str = "PyPI",
-    ) -> str:
-        parsed_specs, rejected = parse_dependency_specs(dependencies, ecosystem)
-        if not parsed_specs and rejected:
-            return format_vulnerability_results([], [], rejected)
-
-        try:
-            results = query_dependency_vulnerabilities(parsed_specs)
-        except requests.RequestException as exc:
-            return f"Dependency vulnerability check failed: {exc}"
-
-        return format_vulnerability_results(parsed_specs, results, rejected)
-
-    @tracked_tool
     def check_repository_dependency_vulnerabilities(repository: str) -> str:
         owner, repo = parse_repository_reference(repository)
         local_path = get_downloaded_repository_path(
@@ -194,7 +177,6 @@ def build_tools(
         download_github_repository,
         get_downloaded_repo_files,
         get_repository_dependencies,
-        check_dependency_vulnerabilities,
         check_repository_dependency_vulnerabilities,
         web_search,
         think,
