@@ -9,6 +9,6 @@ TOOL_DOCSTRINGS = {
     ),
     "web_search": "Search the web with Tavily and return concise results with source URLs.",
     "think": (
-        "Record a brief internal planning note about the current task and next steps."
+        "Record a brief reasoning summary about the current task, findings, and next steps."
     ),
 }

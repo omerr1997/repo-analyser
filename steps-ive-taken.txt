@@ -12,3 +12,4 @@
 12. Documented in the README that the project history is tracked in the steps file and noted the exploration of LlamaIndex as a possible alternative approach for repository understanding and issue analysis.
 13. Standardized the Python package setup with a project configuration file and relative internal imports to improve module resolution in editors and local environments.
 14. Replaced the old downloaded-repository check tool with a more practical repo-reading tool that can list filenames, return a specific file, or return readable text content from a downloaded repository.
+15. Added a FastAPI chat layer and a React user interface with voice input, answer playback, readable chat, and a toggleable agent-trace view for tools and reasoning summaries.

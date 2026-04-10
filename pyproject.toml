@@ -13,6 +13,8 @@ dependencies = [
   "python-dotenv",
   "requests",
   "tavily-python",
+  "fastapi",
+  "uvicorn",
 ]
 
 [tool.setuptools]

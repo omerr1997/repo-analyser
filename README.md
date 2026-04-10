@@ -10,6 +10,8 @@ The project scaffold lives under `src/repo_analyser/` and currently includes:
 - LangChain agent wiring for a ReAct-style scaffold
 - A lightweight local `MemoryStore`
 - Separate files for tools, tool docstrings, and the custom `@tracked_tool` decorator
+- A FastAPI API layer for frontend communication
+- A React workspace for voice input, chat, and trace inspection
 
 ## Notes on Approaches Considered
 
@@ -23,6 +25,30 @@ Run the scaffold with:
 pip install -e .
 python main.py --show-tools
 ```
+
+Run the API locally with:
+
+```bash
+uvicorn repo_analyser.server:app --reload
+```
+
+Run the React UI locally with:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The React UI supports:
+
+- text chat with the agent
+- browser voice input when speech recognition is available
+- answer playback through browser speech synthesis
+- a toggleable trace layer that shows tool order and short reasoning summaries
+- hover and focus details for individual trace steps
+
+The trace view is intentionally a readable reasoning summary and tool log, not raw hidden chain-of-thought.
 
 If your editor says it cannot find modules like `repo_analyser.config`, install the project in editable mode from the repository root:
 
