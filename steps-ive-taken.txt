@@ -1,0 +1,5 @@
+1. Created this running step log file and established the concise numbered update format for future actions.
+2. Created the empty Assignment Instructions folder at the project root for future project guidance.
+3. Chose OpenRouter as the API LLM provider for this project based on cost efficiency and project suitability.
+4. Added the project environment configuration file and stored the provided OpenRouter API key.
+5. Added a Git ignore rule for the environment file to reduce the risk of committing local secrets.
