@@ -1,56 +1,29 @@
-# Repo Analyser Boilerplate
+# research-llm-exercise
+## Introduction
+- This is a boilerplate for using our Azure OpenAI API.
 
-## Overview
+- This is a demonstration. You can use the provided keys with any other framework / API.
 
-This scaffold uses:
+- We provide access to two models:  
+  - GPT-4o
+  - Ada-2
 
-- OpenRouter for LLM access
-- LangChain `create_agent` for a ReAct-style agent runtime
-- A lightweight local `MemoryStore` for persistence
-- A custom `@tracked_tool` decorator that stores each tool docstring centrally
+- We will provide you a `.env` file containing the relevant deployment names, keys, and other parameter files, allowing you to use it.
 
-The current agent is intentionally minimal. It is wired correctly, but it does not perform repository analysis yet.
+- This is a suggestion; you can use any other model.
 
-## File Layout
+## Task
+Write a chatbot application which works with a GitHub repository (a cloned folder can work as well) as a context. It gets a question about the code from the user as an input, then answers him.
 
-- `main.py`: CLI entrypoint and basic invocation guardrails
-- `agent.py`: LangChain agent construction and system prompt
-- `tools.py`: tool definitions only
-- `tool_docstrings.py`: centralized tool docstrings
-- `tooling.py`: custom tool decorator and docstring registry
-- `memory_store.py`: local JSON-backed persistence
-- `config.py`: environment-backed settings
+Here are some examples of questions:
+1. Is there any authentication-related logic in the code? If so, where is it?
+2. What does the following application do?
+3. What is the flow (classes and function calls) of an executable signing in this application?
 
-## Environment
+The application should leverage an LLM model in order to answer the question. Embeddings can also be used if necessary.
 
-Required:
+The UI part is not important, it can also be an interactive CLI.
 
-- `OPENROUTER_API_KEY`
-
-Optional:
-
-- `OPENROUTER_MODEL`
-- `AGENT_MEMORY_PATH`
-- `AGENT_MAX_PROMPT_CHARS`
-- `AGENT_MAX_ITERATIONS`
-- `AGENT_MAX_OUTPUT_TOKENS`
-
-## Install
-
-```bash
-pip install -r "Assignment Instructions/requirements.txt"
-```
-
-## Run
-
-```bash
-python "Assignment Instructions/main.py" --show-tools
-python "Assignment Instructions/main.py" --prompt "What can you do right now?"
-```
-
-## Guardrails
-
-- Empty and oversized prompts are rejected early.
-- Thread identifiers are sanitized.
-- Tool docstrings must exist before a tool is registered.
-- The agent is instructed not to invent capabilities or side effects.
+### Notes
+1. For a Java application, use the [`jsign`](https://github.com/ebourg/jsign) application repository. 
+2. For a Python application, use the [`signify`](https://github.com/ralphje/signify) Python module repository.

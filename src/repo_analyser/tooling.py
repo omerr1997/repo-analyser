@@ -6,7 +6,7 @@ from typing import Any
 
 from langchain.tools import tool as langchain_tool
 
-from tool_docstrings import TOOL_DOCSTRINGS
+from repo_analyser.tool_docstrings import TOOL_DOCSTRINGS
 
 
 REGISTERED_TOOL_DOCSTRINGS: dict[str, str] = {}
@@ -21,7 +21,7 @@ def tracked_tool(
         tool_name = tool_kwargs.get("name") or inner.__name__
         docstring = TOOL_DOCSTRINGS.get(tool_name) or inspect.getdoc(inner)
         if not docstring:
-            raise ValueError(f"Tool '{tool_name}' must define a docstring.")
+            raise ValueError(f"Tool '{tool_name}' is missing a docstring.")
 
         inner.__doc__ = docstring
         REGISTERED_TOOL_DOCSTRINGS[tool_name] = docstring

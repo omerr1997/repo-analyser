@@ -5,3 +5,5 @@
 5. Added a Git ignore rule for the environment file to reduce the risk of committing local secrets.
 6. Replaced the Azure sample with a clean OpenRouter and LangChain boilerplate agent scaffold, including persistent local memory, separated tool files, centralized tool docstrings, and a custom tracked tool decorator.
 7. Added standard Python cache ignore rules after verification to keep the repository clean across local runs.
+8. Restored the provided Assignment Instructions folder to its original state and moved the project scaffold into a separate source layout to keep the assignment material untouched.
+9. Simplified the new project layout so the root entrypoint runs directly and the local memory file stays out of version control.
