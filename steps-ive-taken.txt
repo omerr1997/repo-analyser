@@ -22,3 +22,4 @@
 22. Removed placeholder agent tools, tightened the main system prompt, and reduced the hover trace into a cleaner summary card to avoid awkward visual overflow.
 23. Added runtime handling for token and credit exhaustion so the UI now shows a clear assistant message with next steps instead of surfacing a backend crash.
 24. Added the current date directly to the agent system prompt so the assistant has explicit date context during runtime.
+25. Added the downloaded-repos directory to Git ignore so locally fetched repositories are not committed to version control.
