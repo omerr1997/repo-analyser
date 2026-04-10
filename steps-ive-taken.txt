@@ -9,3 +9,4 @@
 9. Simplified the new project layout so the root entrypoint runs directly and the local memory file stays out of version control.
 10. Added GitHub repository download support and local download-detection tools for the agent, with downloaded repositories stored under a dedicated local folder.
 11. Added Tavily-powered web search support, configured the Tavily API key, and introduced a lightweight think tool for internal planning notes.
+12. Documented in the README that the project history is tracked in the steps file and noted the exploration of LlamaIndex as a possible alternative approach for repository understanding and issue analysis.

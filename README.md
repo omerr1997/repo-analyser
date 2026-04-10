@@ -2,12 +2,20 @@
 
 This repository keeps the provided assignment materials in `Assignment Instructions/` unchanged.
 
+Project progress is tracked in `steps-ive-taken.txt`, which records the running history of decisions and implementation steps taken during the project.
+
 The project scaffold lives under `src/repo_analyser/` and currently includes:
 
 - OpenRouter for LLM usage
 - LangChain agent wiring for a ReAct-style scaffold
 - A lightweight local `MemoryStore`
 - Separate files for tools, tool docstrings, and the custom `@tracked_tool` decorator
+
+## Notes on Approaches Considered
+
+In addition to the current LangChain-based scaffold, I also looked into existing approaches that might already solve part of the assignment out of the box.
+
+One option I reviewed was LlamaIndex. From my current understanding, it offers building blocks for ingesting codebases and repositories and is aligned with the kind of assignment we received: understanding a repository, surfacing relevant structure, and helping answer questions about issues, weaknesses, and other repository-level concerns. It is being tracked here as a relevant alternative approach that may be useful to revisit as the implementation evolves.
 
 Run the scaffold with:
 
