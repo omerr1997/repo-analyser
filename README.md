@@ -4,14 +4,12 @@ Repo Analyser is a lightweight repository-analysis assistant built to download G
 
 The project combines a small agent backend with a minimal frontend so you can ask questions about downloaded repositories, inspect files, review tool activity, and gradually move toward deeper code-analysis workflows.
 
-This repository keeps the provided assignment materials in `Assignment Instructions/` unchanged.
-
 Project progress is tracked in `steps-ive-taken.txt`, which records the running history of decisions and implementation steps taken during the project.
 
 The current project includes:
 
 - OpenRouter for LLM usage
-- LangChain agent wiring for a ReAct-style scaffold
+- LangChain agent wiring for a ReAct-style agent
 - A lightweight local `MemoryStore`
 - Separate files for tools, tool docstrings, and the custom `@tracked_tool` decorator
 - A FastAPI API layer for frontend communication
@@ -24,9 +22,9 @@ The current project includes:
 
 ## Notes on Approaches Considered
 
-In addition to the current LangChain-based scaffold, I also looked into existing approaches that might already solve part of the assignment out of the box.
+In addition to the current LangChain-based implementation, I also looked into existing approaches that might already solve part of the requirements out of the box.
 
-One option I reviewed was LlamaIndex. From my current understanding, it offers building blocks for ingesting codebases and repositories and is aligned with the kind of assignment we received: understanding a repository, surfacing relevant structure, and helping answer questions about issues, weaknesses, and other repository-level concerns. It is being tracked here as a relevant alternative approach that may be useful to revisit as the implementation evolves.
+One option I reviewed was LlamaIndex. From my current understanding, it offers building blocks for ingesting codebases and repositories and is aligned with the goals of this project: understanding a repository, surfacing relevant structure, and helping answer questions about issues, weaknesses, and other repository-level concerns. It is being tracked here as a relevant alternative approach that may be useful to revisit as the implementation evolves.
 
 Another direction worth exploring for a longer version of the project is graph-based repository mapping. The idea is to take a repository and represent it as a graph of functions, calls, and data flow so the system can better explain how code paths connect and how execution moves through the project. One option that appears especially relevant for this kind of deeper exploration is GitNexus.
 
@@ -46,7 +44,7 @@ A more complete version of the project would likely use multiple analysis layers
 
 This suggests a future architecture that is closer to a multi-step workflow, potentially with something like LangGraph, where each node is responsible for a specific kind of repository analysis and the final LLM step produces the explanation and summary for the user.
 
-Run the scaffold with:
+Run the tool with:
 
 ```bash
 pip install -e .

@@ -14,7 +14,7 @@ from repo_analyser.tooling import REGISTERED_TOOL_DOCSTRINGS
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run the repo analyser scaffold.")
+    parser = argparse.ArgumentParser(description="Run the repo analyser.")
     parser.add_argument(
         "--prompt",
         default="What can you do right now?",
