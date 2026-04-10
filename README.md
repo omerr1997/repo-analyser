@@ -1,10 +1,14 @@
 # Repo Analyser
 
+Repo Analyser is a lightweight repository-analysis assistant built to download GitHub repositories, inspect their structure, follow implementation details, and surface early dependency or security findings through a simple chat interface.
+
+The project combines a small agent backend with a minimal frontend so you can ask questions about downloaded repositories, inspect files, review tool activity, and gradually move toward deeper code-analysis workflows.
+
 This repository keeps the provided assignment materials in `Assignment Instructions/` unchanged.
 
 Project progress is tracked in `steps-ive-taken.txt`, which records the running history of decisions and implementation steps taken during the project.
 
-The project scaffold lives under `src/repo_analyser/` and currently includes:
+The current project includes:
 
 - OpenRouter for LLM usage
 - LangChain agent wiring for a ReAct-style scaffold
@@ -12,8 +16,11 @@ The project scaffold lives under `src/repo_analyser/` and currently includes:
 - Separate files for tools, tool docstrings, and the custom `@tracked_tool` decorator
 - A FastAPI API layer for frontend communication
 - A React workspace for minimal chat and trace inspection
+- Tools for downloading repositories and reading local repository files
 - OSV-based dependency vulnerability checking for package versions
 - Repository-aware dependency discovery before vulnerability reporting
+- Estimated dependency-version fallback when exact package pins are not available
+- A constrained web-search tool for repository and code-analysis topics
 
 ## Notes on Approaches Considered
 
