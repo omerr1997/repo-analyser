@@ -29,8 +29,9 @@ class Settings:
             raise ValueError("OPENROUTER_API_KEY is required.")
 
         model_name = os.getenv("OPENROUTER_MODEL", DEFAULT_MODEL).strip() or DEFAULT_MODEL
-        max_output_tokens = int(
-            os.getenv("OPENROUTER_MAX_OUTPUT_TOKENS", str(DEFAULT_MAX_OUTPUT_TOKENS))
+        max_output_tokens = _get_positive_int_from_env(
+            "OPENROUTER_MAX_OUTPUT_TOKENS",
+            DEFAULT_MAX_OUTPUT_TOKENS,
         )
         memory_path = Path(os.getenv("AGENT_MEMORY_PATH", "data/agent-memory.json"))
         downloaded_repos_path = Path(
@@ -46,3 +47,15 @@ class Settings:
             downloaded_repos_path=downloaded_repos_path,
             tavily_api_key=tavily_api_key,
         )
+
+
+def _get_positive_int_from_env(name: str, default: int) -> int:
+    raw_value = os.getenv(name, str(default)).strip()
+    try:
+        value = int(raw_value)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be a positive integer.") from exc
+
+    if value <= 0:
+        raise ValueError(f"{name} must be a positive integer.")
+    return value

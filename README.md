@@ -11,9 +11,9 @@ The project scaffold lives under `src/repo_analyser/` and currently includes:
 - A lightweight local `MemoryStore`
 - Separate files for tools, tool docstrings, and the custom `@tracked_tool` decorator
 - A FastAPI API layer for frontend communication
-- A React workspace for voice input, chat, and trace inspection
+- A React workspace for minimal chat and trace inspection
 - OSV-based dependency vulnerability checking for package versions
-- repository-aware dependency discovery before vulnerability reporting
+- Repository-aware dependency discovery before vulnerability reporting
 
 ## Notes on Approaches Considered
 

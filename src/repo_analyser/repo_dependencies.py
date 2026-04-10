@@ -40,7 +40,7 @@ def discover_repository_dependencies(repo_path: Path) -> tuple[list[DependencySp
             sources.append(package_json.relative_to(repo_path).as_posix())
         skipped.extend(f"{package_json.name}: {item}" for item in rejected)
 
-    return _dedupe_specs(specs), sorted(set(sources)), skipped
+    return _dedupe_specs(specs), sorted(set(sources)), _dedupe_strings(skipped)
 
 
 def format_discovered_dependencies(
@@ -150,3 +150,7 @@ def _dedupe_specs(specs: list[DependencySpec]) -> list[DependencySpec]:
     for spec in specs:
         seen[(spec.name, spec.version, spec.ecosystem)] = spec
     return list(seen.values())
+
+
+def _dedupe_strings(values: list[str]) -> list[str]:
+    return sorted(set(values))

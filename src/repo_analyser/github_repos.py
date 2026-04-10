@@ -151,7 +151,7 @@ def download_repository_archive(owner: str, repo: str, base_dir: Path) -> tuple[
         if temp_extract_dir.exists():
             shutil.rmtree(temp_extract_dir)
 
-        archive.extractall(temp_extract_dir)
+        _extract_archive_safely(archive, temp_extract_dir)
         shutil.move(str(temp_extract_dir / top_level_folder), str(destination))
         shutil.rmtree(temp_extract_dir, ignore_errors=True)
 
@@ -169,3 +169,13 @@ def _get_archive_root_folder(archive: zipfile.ZipFile) -> str:
         raise ValueError("Downloaded repository archive was empty.")
 
     return root_names[0]
+
+
+def _extract_archive_safely(archive: zipfile.ZipFile, destination: Path) -> None:
+    destination = destination.resolve()
+    for member in archive.infolist():
+        member_path = (destination / member.filename).resolve()
+        if destination not in member_path.parents and member_path != destination:
+            raise ValueError("Repository archive contained an invalid file path.")
+
+    archive.extractall(destination)

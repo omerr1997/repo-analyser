@@ -30,7 +30,7 @@ fi
 
 echo "Starting API on http://127.0.0.1:8000 ..."
 cd "$ROOT_DIR"
-python -m uvicorn repo_analyser.server:app --reload &
+python -m uvicorn --app-dir src repo_analyser.server:app --reload &
 API_PID=$!
 
 echo "Starting frontend on http://127.0.0.1:5173 ..."

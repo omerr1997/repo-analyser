@@ -32,3 +32,4 @@
 32. Strengthened the agent guardrails to forbid exposing secrets or internal configuration and to keep web search scoped to repository, code, and software-analysis topics only.
 33. Added repository-aware dependency discovery and a repo-level vulnerability check so dependency weakness answers are based only on dependencies actually found in the downloaded repository.
 34. Tightened the dependency-vulnerability flow so the agent explicitly avoids making package-risk claims when exact repository dependency versions were not actually discovered.
+35. Performed a final pre-deployment cleanup pass across the project, improving config validation, startup reliability, archive-safety checks, duplicate dependency-entry cleanup, and a few small readability refinements.

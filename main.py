@@ -50,7 +50,7 @@ def main() -> None:
     agent = build_agent(settings, memory_store)
 
     if args.show_tools:
-        for tool_name, docstring in REGISTERED_TOOL_DOCSTRINGS.items():
+        for tool_name, docstring in sorted(REGISTERED_TOOL_DOCSTRINGS.items()):
             print(f"{tool_name}: {docstring}")
         print()
 

@@ -79,6 +79,8 @@ def _build_trace(messages: list[Any]) -> list[dict[str, Any]]:
     trace: list[dict[str, Any]] = []
 
     for message in messages:
+        # LangChain returns tool calls and tool outputs as separate message objects.
+        # We collect calls first, then pair each tool result back to its originating call.
         for tool_call in getattr(message, "tool_calls", []) or []:
             tool_calls[tool_call["id"]] = {
                 "id": tool_call["id"],

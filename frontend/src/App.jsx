@@ -17,8 +17,8 @@ function App() {
   const [messages, setMessages] = useState(INITIAL_MESSAGES);
   const [draft, setDraft] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [threadId] = useState(() => getThreadId());
   const deferredMessages = useDeferredValue(messages);
-  const threadId = getThreadId();
 
   async function handleSubmit(event) {
     event.preventDefault();
