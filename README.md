@@ -19,6 +19,8 @@ In addition to the current LangChain-based scaffold, I also looked into existing
 
 One option I reviewed was LlamaIndex. From my current understanding, it offers building blocks for ingesting codebases and repositories and is aligned with the kind of assignment we received: understanding a repository, surfacing relevant structure, and helping answer questions about issues, weaknesses, and other repository-level concerns. It is being tracked here as a relevant alternative approach that may be useful to revisit as the implementation evolves.
 
+Another direction worth exploring for a longer version of the project is graph-based repository mapping. The idea is to take a repository and represent it as a graph of functions, calls, and data flow so the system can better explain how code paths connect and how execution moves through the project. One option that appears relevant for this kind of deeper exploration is GitNexus.
+
 Run the scaffold with:
 
 ```bash
