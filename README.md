@@ -42,6 +42,12 @@ npm install
 npm run dev
 ```
 
+For a single local startup command, use:
+
+```bash
+./run.sh
+```
+
 The React UI supports:
 
 - text chat with the agent

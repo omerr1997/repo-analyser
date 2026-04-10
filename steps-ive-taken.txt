@@ -14,3 +14,4 @@
 14. Replaced the old downloaded-repository check tool with a more practical repo-reading tool that can list filenames, return a specific file, or return readable text content from a downloaded repository.
 15. Added a FastAPI chat layer and a React user interface with voice input, answer playback, readable chat, and a toggleable agent-trace view for tools and reasoning summaries.
 16. Documented GitNexus as another future exploration path for graph-based repository mapping to better describe function relationships, call chains, and data flow.
+17. Added a root run script to start the API and frontend together with a single command for easier local use.
