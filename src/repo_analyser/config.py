@@ -33,7 +33,9 @@ class Settings:
             "OPENROUTER_MAX_OUTPUT_TOKENS",
             DEFAULT_MAX_OUTPUT_TOKENS,
         )
-        memory_path = Path(os.getenv("AGENT_MEMORY_PATH", "data/agent-memory.json"))
+        memory_path = Path(
+            os.getenv("AGENT_MEMORY_PATH", _default_memory_path())
+        )
         downloaded_repos_path = Path(
             os.getenv("DOWNLOADED_REPOS_PATH", "downloaded-repos")
         )
@@ -59,3 +61,9 @@ def _get_positive_int_from_env(name: str, default: int) -> int:
     if value <= 0:
         raise ValueError(f"{name} must be a positive integer.")
     return value
+
+
+def _default_memory_path() -> str:
+    if os.getenv("VERCEL"):
+        return "/tmp/repo-analyser-memory.json"
+    return "data/agent-memory.json"

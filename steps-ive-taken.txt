@@ -35,3 +35,4 @@
 35. Performed a final pre-deployment cleanup pass across the project, improving config validation, startup reliability, archive-safety checks, duplicate dependency-entry cleanup, and a few small readability refinements.
 36. Trimmed the agent surface by removing an unnecessary generic vulnerability tool and tightened the system prompt so the agent stays focused on repository-specific analysis and uses context more cleanly.
 37. Updated dependency discovery so non-exact version specs can fall back to an estimated latest package version, with vulnerability results explicitly labeled as estimates when exact repository pins are unavailable.
+38. Added Vercel deployment wiring for a frontend-plus-API setup, aligned local and deployed API routing, and made the default memory path safe for Vercel's temporary filesystem.

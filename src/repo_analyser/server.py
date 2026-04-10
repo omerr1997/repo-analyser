@@ -23,11 +23,11 @@ app.add_middleware(
 )
 
 
-@app.get("/api/health")
+@app.get("/health")
 def healthcheck() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.post("/api/chat")
+@app.post("/chat")
 def chat(payload: ChatRequest) -> dict:
     return run_agent_turn(payload.message, payload.thread_id)

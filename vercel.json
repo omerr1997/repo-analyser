@@ -1,0 +1,12 @@
+{
+  "experimentalServices": {
+    "frontend": {
+      "entrypoint": "frontend",
+      "routePrefix": "/"
+    },
+    "api": {
+      "entrypoint": "src/repo_analyser/server.py",
+      "routePrefix": "/api"
+    }
+  }
+}
