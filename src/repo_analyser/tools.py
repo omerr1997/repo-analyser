@@ -23,20 +23,6 @@ def build_tools(
     tavily_api_key: str,
 ) -> list:
     @tracked_tool
-    def get_agent_status() -> str:
-        return "The agent scaffold is ready, but repository analysis is not implemented yet."
-
-    @tracked_tool
-    def save_note(note: str) -> str:
-        note = note.strip()
-        if not note:
-            return "Skipped saving an empty note."
-
-        key = sha1(note.encode("utf-8")).hexdigest()[:12]
-        memory_store.put("notes", key, {"note": note})
-        return f"Saved note as '{key}'."
-
-    @tracked_tool
     def download_github_repository(repository: str) -> str:
         owner, repo = parse_repository_reference(repository)
         extracted_path, branch_name = download_repository_archive(
@@ -132,8 +118,6 @@ def build_tools(
         return f"Thought recorded under '{key}'."
 
     return [
-        get_agent_status,
-        save_note,
         download_github_repository,
         get_downloaded_repo_files,
         web_search,

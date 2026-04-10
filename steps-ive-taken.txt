@@ -19,3 +19,4 @@
 19. Removed redundant chat controls, added Enter-to-send behavior, differentiated user and agent styling, and moved the agent trace to a hoverable agent badge with readable reasoning summaries.
 20. Added an explicit OpenRouter output-token cap so agent requests stay within lower credit budgets and avoid oversized response allocation errors.
 21. Expanded the README future-work note on GitNexus to reflect prior hands-on usage and its potential to handle repository structure mapping and improve higher-level project write-ups alongside an agent.
+22. Removed placeholder agent tools, tightened the main system prompt, and reduced the hover trace into a cleaner summary card to avoid awkward visual overflow.

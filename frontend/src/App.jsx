@@ -97,7 +97,6 @@ function App() {
           <p className="terminal-kicker">repo analyser</p>
           <h1>Agent Console</h1>
         </div>
-        <p className="terminal-note">hover the agent badge for trace</p>
       </header>
 
       <section className="chat-log" role="log" aria-live="polite">
@@ -170,14 +169,14 @@ function AgentBadge({ trace, loading = false }) {
 
       {hasTrace ? (
         <div className="trace-popover" role="note">
-          <p className="trace-heading">trace summary</p>
+          <p className="trace-heading">reasoning summary</p>
           {trace.map((entry, index) => (
             <div className="trace-line" key={entry.id ?? `${entry.tool}-${index}`}>
               <p className="trace-line-title">
                 {index + 1}. {entry.tool} <span>{entry.kind === "thought" ? "reasoning" : "tool"}</span>
               </p>
               <p className="trace-line-copy">{entry.label}</p>
-              <pre>{formatTraceDetail(entry)}</pre>
+              {entry.output ? <pre>{formatTraceOutput(entry.output)}</pre> : null}
             </div>
           ))}
         </div>
@@ -186,10 +185,15 @@ function AgentBadge({ trace, loading = false }) {
   );
 }
 
-function formatTraceDetail(entry) {
-  const input = entry.input ? JSON.stringify(entry.input, null, 2) : "{}";
-  const output = entry.output || "No output";
-  return `input\n${input}\n\noutput\n${output}`;
+function formatTraceOutput(output) {
+  const trimmed = output.trim();
+  if (!trimmed) {
+    return "";
+  }
+  if (trimmed.length <= 280) {
+    return trimmed;
+  }
+  return `${trimmed.slice(0, 280)}...`;
 }
 
 export default App;

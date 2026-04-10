@@ -62,10 +62,7 @@ textarea {
 }
 
 .terminal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 20px;
+  display: block;
   padding: 20px 22px;
   border-bottom: 1px solid var(--line);
 }
@@ -74,7 +71,6 @@ textarea {
 .message-role,
 .trace-heading,
 .composer-hint,
-.terminal-note,
 .send-button {
   text-transform: lowercase;
   letter-spacing: 0.04em;
@@ -93,7 +89,6 @@ textarea {
   font-weight: 600;
 }
 
-.terminal-note,
 .send-button {
   color: var(--text-faint);
   font-size: 0.8rem;
@@ -126,11 +121,15 @@ textarea {
 }
 
 .message-row.user {
-  border-left-color: rgba(90, 255, 145, 0.4);
+  border-left-color: rgba(140, 200, 255, 0.7);
+  background: rgba(6, 13, 18, 0.55);
+  padding: 12px 0 12px 14px;
 }
 
 .message-row.assistant {
   border-left-color: rgba(42, 255, 114, 0.65);
+  background: rgba(4, 10, 6, 0.5);
+  padding: 12px 0 12px 14px;
 }
 
 .message-head {
@@ -201,10 +200,10 @@ textarea {
   position: absolute;
   left: 0;
   top: calc(100% + 10px);
-  width: min(720px, calc(100vw - 80px));
-  max-height: 420px;
+  width: min(460px, calc(100vw - 80px));
+  max-height: 320px;
   overflow: auto;
-  padding: 14px;
+  padding: 12px;
   border: 1px solid rgba(90, 255, 145, 0.18);
   background: rgba(3, 9, 5, 0.98);
   box-shadow: var(--shadow);
@@ -225,8 +224,8 @@ textarea {
 
 .trace-line {
   border-top: 1px solid rgba(90, 255, 145, 0.12);
-  padding-top: 12px;
-  margin-top: 12px;
+  padding-top: 10px;
+  margin-top: 10px;
 }
 
 .trace-line:first-of-type {
@@ -237,7 +236,7 @@ textarea {
 
 .trace-line-title,
 .trace-line-copy {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
 }
 
 .trace-line-title {
@@ -258,7 +257,8 @@ textarea {
   word-break: break-word;
   color: var(--text);
   font-family: var(--mono);
-  line-height: 1.6;
+  line-height: 1.5;
+  font-size: 0.82rem;
 }
 
 .composer {
@@ -321,12 +321,11 @@ textarea {
     align-items: start;
   }
 
-  .send-button,
-  .terminal-note {
+  .send-button {
     width: 100%;
   }
 
   .trace-popover {
-    width: min(100vw - 48px, 720px);
+    width: min(100vw - 48px, 460px);
   }
 }
