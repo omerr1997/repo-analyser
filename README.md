@@ -50,11 +50,10 @@ For a single local startup command, use:
 
 The React UI supports:
 
-- text chat with the agent
-- browser voice input when speech recognition is available
-- answer playback through browser speech synthesis
+- minimal text chat with the agent
+- a terminal-inspired black-and-green workspace
 - a toggleable trace layer that shows tool order and short reasoning summaries
-- hover and focus details for individual trace steps
+- expandable trace steps for readable detail when needed
 
 The trace view is intentionally a readable reasoning summary and tool log, not raw hidden chain-of-thought.
 

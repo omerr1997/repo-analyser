@@ -15,3 +15,4 @@
 15. Added a FastAPI chat layer and a React user interface with voice input, answer playback, readable chat, and a toggleable agent-trace view for tools and reasoning summaries.
 16. Documented GitNexus as another future exploration path for graph-based repository mapping to better describe function relationships, call chains, and data flow.
 17. Added a root run script to start the API and frontend together with a single command for easier local use.
+18. Simplified the frontend into a minimal terminal-style chat interface with a black-and-green coding aesthetic, removing voice features, side panels, and extra visual chrome.
