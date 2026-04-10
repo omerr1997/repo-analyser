@@ -26,6 +26,10 @@ def build_agent(settings: Settings, memory_store: MemoryStore):
 
     return create_agent(
         model=model,
-        tools=build_tools(memory_store, settings.downloaded_repos_path),
+        tools=build_tools(
+            memory_store=memory_store,
+            downloaded_repos_path=settings.downloaded_repos_path,
+            tavily_api_key=settings.tavily_api_key,
+        ),
         system_prompt=SYSTEM_PROMPT,
     )

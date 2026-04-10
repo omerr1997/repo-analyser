@@ -2,3 +2,4 @@ langchain
 langchain-openrouter
 python-dotenv
 requests
+tavily-python

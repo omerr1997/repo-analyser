@@ -7,4 +7,8 @@ TOOL_DOCSTRINGS = {
     "is_github_repository_downloaded": (
         "Check whether a GitHub repository has already been downloaded locally."
     ),
+    "web_search": "Search the web with Tavily and return concise results with source URLs.",
+    "think": (
+        "Record a brief internal planning note about the current task and next steps."
+    ),
 }

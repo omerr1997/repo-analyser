@@ -16,6 +16,7 @@ class Settings:
     model_name: str
     memory_path: Path
     downloaded_repos_path: Path
+    tavily_api_key: str
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -30,10 +31,12 @@ class Settings:
         downloaded_repos_path = Path(
             os.getenv("DOWNLOADED_REPOS_PATH", "downloaded-repos")
         )
+        tavily_api_key = os.getenv("TAVILY_API_KEY", "").strip()
 
         return cls(
             openrouter_api_key=api_key,
             model_name=model_name,
             memory_path=memory_path,
             downloaded_repos_path=downloaded_repos_path,
+            tavily_api_key=tavily_api_key,
         )
