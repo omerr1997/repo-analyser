@@ -23,6 +23,20 @@ Another direction worth exploring for a longer version of the project is graph-b
 
 From my experience using GitNexus in a different repository, it seems capable of significantly improving understanding of repository structure, component relationships, and how one part of the system leads to another. That kind of mapping can make it easier to write a stronger summary of what a project is doing, how it should be used, and where it could be improved. It also seems like a strong candidate to use alongside an agent, since it can handle a meaningful portion of the structural heavy lifting before the agent begins higher-level reasoning and write-up work.
 
+## Findings and Future Uses
+
+At this stage, the project is best understood as a basic LLM agent that can download repositories, inspect them, retain some conversation context, and provide early guidance about what is inside a project. That is useful, but it is still only a first layer of what a stronger repository-analysis system would need.
+
+A more complete version of the project would likely use multiple analysis layers instead of relying on one generic agent step:
+
+- a structure layer that maps files, folders, entrypoints, requirements, and major project components
+- a deeper code layer that follows classes, functions, authentication, and data flow across the repository itself
+- a dependency and weakness layer that looks for vulnerable packages and known security issues
+- a bug and code-flow layer that identifies suspicious logic, risky data movement, and likely implementation problems
+- a final synthesis layer where the LLM combines all findings into a write-up of strengths, weaknesses, risks, and recommendations
+
+This suggests a future architecture that is closer to a multi-step workflow, potentially with something like LangGraph, where each node is responsible for a specific kind of repository analysis and the final LLM step produces the explanation and summary for the user.
+
 Run the scaffold with:
 
 ```bash
